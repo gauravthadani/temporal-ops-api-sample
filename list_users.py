@@ -6,7 +6,7 @@ Simple script to list users from Temporal Cloud using the Cloud API.
 import os
 import sys
 import grpc
-from temporal.api.cloud.cloudservice.v1 import , request_response_pb2
+from temporal.api.cloud.cloudservice.v1 import service_pb2_grpc, request_response_pb2
 
 
 def list_users(api_key: str, namespace: str = None, page_size: int = 10):
@@ -50,7 +50,9 @@ def list_users(api_key: str, namespace: str = None, page_size: int = 10):
             print(f"Filtering by namespace: {namespace}")
         print()
 
-        response = client.GetUsers(request)
+        # Add API version metadata
+        metadata = [("temporal-cloud-api-version", "2024-05-13-00")]
+        response = client.GetUsers(request, metadata=metadata)
 
         # Display results
         if not response.users:

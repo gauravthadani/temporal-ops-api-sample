@@ -2,40 +2,41 @@
 
 This repository includes the Temporal API and Temporal Cloud API as git subtrees.
 
-## Git Subtree Setup
+## Setup
 
-### Temporal API
-
-The Temporal API is included in the `api/` directory using git subtree:
+Add the Temporal API and Cloud API as git subtrees:
 
 ```bash
+# Add Temporal API
 git subtree add --prefix=api https://github.com/temporalio/api.git master --squash
-```
 
-To pull updates:
-
-```bash
-git subtree pull --prefix=api https://github.com/temporalio/api.git master --squash
-```
-
-### Temporal Cloud API
-
-The Temporal Cloud API is included in the `cloud-api/` directory using git subtree:
-
-```bash
+# Add Temporal Cloud API
 git subtree add --prefix=cloud-api https://github.com/temporalio/cloud-api.git main --squash
 ```
 
 To pull updates:
 
 ```bash
+# Update Temporal API
+git subtree pull --prefix=api https://github.com/temporalio/api.git master --squash
+
+# Update Temporal Cloud API
 git subtree pull --prefix=cloud-api https://github.com/temporalio/cloud-api.git main --squash
 ```
 
+## Compile
 
+Generate Python code from protos:
 
-Generate protos 
+```bash
+cd api && python -m grpc_tools.protoc -I./  --python_out=../ --grpc_python_out=../ ./**/*.proto
+cd cloud-api && python -m grpc_tools.protoc -I./  -I../api --python_out=../ --grpc_python_out=../ ./**/*.proto
+```
 
-cd api && python -m grpc_tools.protoc -I./  --python_out=../ --grpc_python_out=./ ./**/*.proto
+## Run
 
-cd cloud-api && python -m grpc_tools.protoc -I./  -I../api --python_out=../ --grpc_python_out=./ ./**/*.proto
+Execute the list_users script:
+
+```bash
+TEMPORAL_CLOUD_API_KEY=`cat api_key` python -m list_users
+```
