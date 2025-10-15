@@ -1,8 +1,10 @@
 # Temporal Ops API Sample
 
-This repository includes the Temporal API as a git subtree.
+This repository includes the Temporal API and Temporal Cloud API as git subtrees.
 
 ## Git Subtree Setup
+
+### Temporal API
 
 The Temporal API is included in the `api/` directory using git subtree:
 
@@ -10,10 +12,22 @@ The Temporal API is included in the `api/` directory using git subtree:
 git subtree add --prefix=api https://github.com/temporalio/api.git master --squash
 ```
 
-### Updating the subtree
-
-To pull updates from the Temporal API repository:
+To pull updates:
 
 ```bash
 git subtree pull --prefix=api https://github.com/temporalio/api.git master --squash
+```
+
+### Temporal Cloud API
+
+The Temporal Cloud API is included in the `cloud-api/` directory using git subtree:
+
+```bash
+git subtree add --prefix=cloud-api https://github.com/temporalio/cloud-api.git main --squash
+```
+
+To pull updates:
+
+```bash
+git subtree pull --prefix=cloud-api https://github.com/temporalio/cloud-api.git main --squash
 ```
