@@ -31,3 +31,11 @@ To pull updates:
 ```bash
 git subtree pull --prefix=cloud-api https://github.com/temporalio/cloud-api.git main --squash
 ```
+
+
+
+Generate protos 
+
+cd api && python -m grpc_tools.protoc -I./  --python_out=../ --grpc_python_out=./ ./**/*.proto
+
+cd cloud-api && python -m grpc_tools.protoc -I./  -I../api --python_out=../ --grpc_python_out=./ ./**/*.proto
