@@ -4,6 +4,8 @@ This repository includes the Temporal API and Temporal Cloud API as git subtrees
 
 ## Setup
 
+
+
 Add the Temporal API and Cloud API as git subtrees:
 
 ```bash
@@ -29,8 +31,8 @@ git subtree pull --prefix=cloud-api https://github.com/temporalio/cloud-api.git 
 Generate Python code from protos:
 
 ```bash
-cd api && python -m grpc_tools.protoc -I./  --python_out=../ --grpc_python_out=../ ./**/*.proto
-cd cloud-api && python -m grpc_tools.protoc -I./  -I../api --python_out=../ --grpc_python_out=../ ./**/*.proto
+cd api && python -m grpc_tools.protoc -I./  --python_out=../ --grpc_python_out=../ ./**/*.proto && cd ..
+cd cloud-api && python -m grpc_tools.protoc -I./  -I../api --python_out=../ --grpc_python_out=../ ./**/*.proto && cd ..
 ```
 
 ## Run
