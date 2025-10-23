@@ -6,7 +6,8 @@ Simple script to list users from Temporal Cloud using the Cloud API.
 import os
 import sys
 import grpc
-from temporal.api.cloud.cloudservice.v1 import service_pb2_grpc, request_response_pb2
+# from temporal.api.cloud.cloudservice.v1 import service_pb2_grpc, request_response_pb2
+from temporalio.api.cloud.cloudservice.v1 import service_pb2_grpc, request_response_pb2
 
 
 def list_users(api_key: str, namespace: str = None, page_size: int = 10):

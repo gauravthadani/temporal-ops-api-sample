@@ -1,38 +1,31 @@
 # Temporal Ops API Sample
 
-This repository includes the Temporal API and Temporal Cloud API as git subtrees.
+This repository demonstrates how to use the Temporal Cloud API to list users using Python and gRPC.
 
 ## Setup
 
-
-
-Add the Temporal API and Cloud API as git subtrees:
+### 1. Create a virtual environment
 
 ```bash
-# Add Temporal API
-git subtree add --prefix=api https://github.com/temporalio/api.git master --squash
-
-# Add Temporal Cloud API
-git subtree add --prefix=cloud-api https://github.com/temporalio/cloud-api.git main --squash
+python3 -m venv venv
 ```
 
-To pull updates:
+### 2. Activate the virtual environment
 
+**On macOS/Linux:**
 ```bash
-# Update Temporal API
-git subtree pull --prefix=api https://github.com/temporalio/api.git master --squash
-
-# Update Temporal Cloud API
-git subtree pull --prefix=cloud-api https://github.com/temporalio/cloud-api.git main --squash
+source venv/bin/activate
 ```
 
-## Compile
+**On Windows:**
+```bash
+venv\Scripts\activate
+```
 
-Generate Python code from protos:
+### 3. Install requirements
 
 ```bash
-cd api && python -m grpc_tools.protoc -I./  --python_out=../ --grpc_python_out=../ ./**/*.proto && cd ..
-cd cloud-api && python -m grpc_tools.protoc -I./  -I../api --python_out=../ --grpc_python_out=../ ./**/*.proto && cd ..
+pip install -r requirements.txt
 ```
 
 ## Run
