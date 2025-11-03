@@ -38,7 +38,8 @@ def list_users(api_key: str, namespace: str = None, page_size: int = 10):
     try:
         # Create GetUsers request
         request = request_response_pb2.GetUsersRequest(
-            page_size=page_size
+            page_size=page_size,
+            page_token="",
         )
 
         # Add namespace filter if provided
@@ -52,35 +53,15 @@ def list_users(api_key: str, namespace: str = None, page_size: int = 10):
         print()
 
         # Add API version metadata
-        metadata = [("temporal-cloud-api-version", "2024-05-13-00")]
-        response = client.GetUsers(request, metadata=metadata)
+        response = get_users(client, request)
+        print_users(response)
 
-        # Display results
-        if not response.users:
-            print("No users found.")
-        else:
-            print(f"Found {len(response.users)} user(s):\n")
-            for user in response.users:
-                print(f"User ID: {user.id}")
-                print(f"  Email: {user.spec.email}")
-                print(f"  State: {user.state}")
-                print(f"  Resource Version: {user.resource_version}")
-
-                # Display account access if available
-                if user.spec.access and user.spec.access.account_access:
-                    print(f"  Account Role: {user.spec.access.account_access.role}")
-
-                # Display namespace accesses if available
-                if user.spec.access and user.spec.access.namespace_accesses:
-                    print(f"  Namespace Access:")
-                    for ns, access in user.spec.access.namespace_accesses.items():
-                        print(f"    - {ns}: {access.permission}")
-
-                print()
-
-            # Display pagination info
+        while response.next_page_token:
             if response.next_page_token:
                 print(f"More users available. Next page token: {response.next_page_token}")
+            request.page_token = response.next_page_token
+            response = get_users(client, request)
+            print_users(response)
 
     except grpc.RpcError as e:
         print(f"Error calling Temporal Cloud API: {e.code()}")
@@ -89,6 +70,35 @@ def list_users(api_key: str, namespace: str = None, page_size: int = 10):
 
     finally:
         channel.close()
+
+
+def get_users(client, request):
+    metadata = [("temporal-cloud-api-version", "2024-05-13-00")]
+    return client.GetUsers(request, metadata=metadata)
+
+
+def print_users(response):
+    if not response.users:
+        print("No users found.")
+    else:
+        print(f"Found {len(response.users)} user(s):\n")
+        for user in response.users:
+            print(f"User ID: {user.id}")
+            print(f"  Email: {user.spec.email}")
+            print(f"  State: {user.state}")
+            print(f"  Resource Version: {user.resource_version}")
+
+            # Display account access if available
+            if user.spec.access and user.spec.access.account_access:
+                print(f"  Account Role: {user.spec.access.account_access.role}")
+
+            # Display namespace accesses if available
+            if user.spec.access and user.spec.access.namespace_accesses:
+                print(f"  Namespace Access:")
+                for ns, access in user.spec.access.namespace_accesses.items():
+                    print(f"    - {ns}: {access.permission}")
+
+            print()
 
 
 def main():
