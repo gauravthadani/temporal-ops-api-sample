@@ -24,7 +24,16 @@ def list_user_group_members(api_key: str, namespace: str = None, page_size: int 
 
     # Create credentials with API key
     call_credentials = grpc.access_token_call_credentials(api_key)
-    channel_credentials = grpc.ssl_channel_credentials()
+    # Disable TLS verification
+    channel_credentials = grpc.ssl_channel_credentials(
+        root_certificates=None,
+        private_key=None,
+        certificate_chain=None
+    )
+    channel_options = [
+        ('grpc.ssl_target_name_override', 'saas-api.tmprl.cloud'),
+        ('grpc.default_authority', 'saas-api.tmprl.cloud'),
+    ]
     composite_credentials = grpc.composite_channel_credentials(
         channel_credentials, call_credentials
     )
@@ -38,7 +47,7 @@ def list_user_group_members(api_key: str, namespace: str = None, page_size: int 
 
         result = get_user_group_members(client, request_response_pb2.GetUserGroupMembersRequest(
             page_size=page_size,
-            group_id="ad0421bb2f084882ad0483c5ecc120f8",
+            group_id="<GROUPID>",
         ))
 
         print(result)
