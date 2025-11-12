@@ -34,36 +34,14 @@ def list_user_group_members(api_key: str, namespace: str = None, page_size: int 
 
     # Create service stub
     client = service_pb2_grpc.CloudServiceStub(channel)
-
-    request = request_response_pb2.GetUserGroupsRequest(
-        page_size=page_size,
-        page_token="",
-    )
-
-    response = get_user_groups(client, request)
-    print(response)
-
-
     try:
-        # Create GetUsers request
-        request = request_response_pb2.GetUserGroupMembersRequest(
+
+        result = get_user_group_members(client, request_response_pb2.GetUserGroupMembersRequest(
             page_size=page_size,
-            page_token="",
-            group_id=response.groups[0].id,
-        )
+            group_id="ad0421bb2f084882ad0483c5ecc120f8",
+        ))
 
-        print()
-
-        # Add API version metadata
-        response = get_user_group_members(client, request)
-        print(response)
-
-        while response.next_page_token:
-            if response.next_page_token:
-                print(f"More available. Next page token: {response.next_page_token}")
-            request.page_token = response.next_page_token
-            response = get_user_group_members(client, request)
-            print(response)
+        print(result)
 
     except grpc.RpcError as e:
         print(f"Error calling Temporal Cloud API: {e.code()}")
