@@ -38,8 +38,8 @@ def list_user_group_members(api_key: str, namespace: str = None, page_size: int 
         channel_credentials, call_credentials
     )
 
-    # Create gRPC channel
-    channel = grpc.secure_channel(cloud_endpoint, composite_credentials)
+    # Create gRPC channel with TLS verification disabled
+    channel = grpc.secure_channel(cloud_endpoint, composite_credentials, options=channel_options)
 
     # Create service stub
     client = service_pb2_grpc.CloudServiceStub(channel)
