@@ -45,6 +45,10 @@ def list_user_group_members(api_key: str, namespace: str = None, page_size: int 
     client = service_pb2_grpc.CloudServiceStub(channel)
     try:
 
+        client.CreateConnectivityRule(request_response_pb2.CreateConnectivityRuleRequest(
+            spec={}
+        ))
+
         result = get_user_group_members(client, request_response_pb2.GetUserGroupMembersRequest(
             page_size=page_size,
             group_id="<GROUPID>",
@@ -63,7 +67,7 @@ def list_user_group_members(api_key: str, namespace: str = None, page_size: int 
 
 def get_user_group_members(client, request):
     metadata = [("temporal-cloud-api-version", "2024-05-13-00")]
-    return client.GetUserGroupMembers(request, metadata=metadata)
+    return client.FailoverNamespaceRegion(request, metadata=metadata)
 
 def get_user_groups(client, request):
     metadata = [("temporal-cloud-api-version", "2024-05-13-00")]

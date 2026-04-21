@@ -27,7 +27,8 @@ func (ops *CloudOps) ProcessPrivilegeRequest(ctx context.Context, request Privil
 		return nil, UserNotFoundError
 	}
 
-	_, err = ops.cloudServiceClient.UpdateUser(ctx, mapUser(request, user))
+	_, err = ops.cloudServiceClient.
+	.UpdateUser(ctx, mapUser(request, user))
 	if err != nil {
 		return &PrivilegeResponse{}, err
 	}

@@ -27,10 +27,10 @@ func main() {
 	}
 
 	request := shared.BreakglassRequest{
-		UserID:        "",
+		UserID:        "3e529a1a8f4d42f59d8c444d0ebbca1e",
 		RequestedBy:   "",
 		Justification: "Why not",
-		EmailID:       "",
+		EmailID:       "gaurav.thadani+test_read_only@temporal.io",
 	}
 
 	we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, shared.BreakglassRequestWorkflow, request)

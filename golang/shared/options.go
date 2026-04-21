@@ -7,7 +7,7 @@ import (
 	"log"
 	"os"
 	"strings"
-	
+
 	"go.temporal.io/sdk/client"
 )
 
